@@ -1,0 +1,44 @@
+---
+title: "generating_table"
+author: "Chandler Sutherland"
+date: '2022-08-25'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(openxlsx)
+```
+
+## Functions
+Read in the excel file 
+```{r}
+#load in hv file and chae clustering file 
+chae <- readxl::read_xlsx(path="C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\chae_2020_supplemental.xlsx")
+
+hvNLR <- readxl::read_xlsx(path="C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\hvNLR.xlsx")
+
+#drop duplicate for different transcripts 
+hvNLR_gene <- hvNLR[c('Gene', 'HV')]%>% unique()
+table <- merge(hvNLR_gene, chae, by.x='Gene', by.y='gene', all = TRUE)
+table
+```
+```{r}
+no_hv <- sum(is.na(table$HV))
+no_cluster <- sum(is.na(table$chrom))
+
+paste("There are ", no_hv, "genes that Chae annotated that do not have hv/nonhv calls, and ", no_cluster, "gene that was present in the hv/nonhv and not the clustering.")
+```
+
+```{r}
+just_hv <- table %>% drop_na('HV')
+
+write.xlsx(just_hv, 'C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\working_table.xlsx')
+```
+
