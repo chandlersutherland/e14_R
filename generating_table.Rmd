@@ -16,8 +16,8 @@ library(ggplot2)
 library(openxlsx)
 ```
 
-## Functions
-Read in the excel file 
+
+Read in the excel files 
 ```{r}
 #load in hv file and chae clustering file 
 chae <- readxl::read_xlsx(path="C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\chae_2020_supplemental.xlsx")
@@ -25,7 +25,9 @@ chae <- readxl::read_xlsx(path="C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Resea
 hvNLR <- readxl::read_xlsx(path="C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\hvNLR.xlsx")
 
 #drop duplicate for different transcripts 
-hvNLR_gene <- hvNLR[c('Gene', 'HV')]%>% unique()
+hvNLR_gene <- hvNLR[c('Gene', 'HV')] %>% unique()
+
+#merge, keep everything 
 table <- merge(hvNLR_gene, chae, by.x='Gene', by.y='gene', all = TRUE)
 table
 ```
@@ -37,8 +39,13 @@ paste("There are ", no_hv, "genes that Chae annotated that do not have hv/nonhv 
 ```
 
 ```{r}
+#filter by just hv calls since that is what we care about 
 just_hv <- table %>% drop_na('HV')
 
 write.xlsx(just_hv, 'C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\working_table.xlsx')
+```
+
+```{r}
+just_hv %>% 
 ```
 
