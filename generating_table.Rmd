@@ -46,6 +46,6 @@ write.xlsx(just_hv, 'C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandl
 ```
 
 ```{r}
-just_hv %>% 
+just_hv 
 ```
 
