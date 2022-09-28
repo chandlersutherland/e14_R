@@ -46,6 +46,14 @@ write.xlsx(just_hv, 'C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandl
 ```
 
 ```{r}
-just_hv 
+#combine hv and nonhv into the gene name, just add 0 for non or 1 for hv 
+#this is maybe not the best way to go about this, may have to make two separate files but like easy enough
+bed <- just_hv[,1:6] %>% unite('name', Gene:HV)
+bed <- bed[,c(2, 3, 4, 1, 5)]
+
+write_tsv(bed, 
+          'C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\all_NLR.bed',
+          col_names=FALSE)
 ```
+
 

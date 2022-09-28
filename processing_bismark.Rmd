@@ -1,0 +1,199 @@
+---
+title: "bismark_extractor"
+author: "Chandler Sutherland"
+date: '2022-09-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(ggsignif)
+library(ggpubr)
+```
+
+```{r}
+working_table <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//working_table.xlsx")
+working_table
+```
+
+
+```{r}
+df <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//bismark_data_points.xlsx")
+
+df <- df %>% mutate('percent_methylated' = prop_methylated*100)
+```
+
+```{r}
+ggplot(df,
+       aes(x=Context, y=percent_methylated, fill=HV))+
+  geom_boxplot()+
+  geom_point(position = position_jitterdodge())+
+  labs(x = 'context', y='proportion methylated cytosines', title="average percentage methylated across accessions")
+```
+```{r}
+t.test(percent_methylated ~ HV, data=df2%>% filter(Context=='CHG'))
+
+```
+
+
+```{r}
+df2 <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//raw_gene_counts.xlsx")
+df2
+```
+```{r}
+df2 <- df2 %>% mutate('percent_methylated' = prop_methylated*100)
+df2
+```
+```{r}
+CHG_t <- t.test(percent_methylated ~ HV, data=df2%>%filter(Context=='CHG'))$p.value
+CHH_t <- t.test(percent_methylated ~ HV, data=df2%>%filter(Context=='CHH'))$p.value
+CpG_t <- t.test(percent_methylated ~ HV, data=df2%>%filter(Context=='CpG'))$p.value
+```
+
+
+```{r}
+ggplot(df2,
+       aes(x=Context, y=percent_methylated, fill=HV))+
+  geom_boxplot()+
+#  geom_point(position = position_jitterdodge(), )+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene %methylation across 5 accessions")
+```
+```{r}
+with_working <- merge(df2, working_table, by=c('Gene', 'HV'))
+
+ggplot(with_working,
+       aes(x=Nterm, y=percent_methylated, fill=HV))+
+  geom_boxplot()+
+  facet_wrap(~Context)+
+#  geom_point(position = position_jitterdodge(), )+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene %methylation across 5 accessions")
+```
+```{r}
+c_n_t <- with_working %>% filter(Nterm != 'R') %>% filter(Nterm != 'X')
+
+ggplot(c_n_t,
+       aes(x=Nterm, y=percent_methylated, fill=HV))+
+  geom_boxplot()+
+  facet_wrap(~Context)+
+  geom_point(position = position_jitterdodge(), alpha=0.3)+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene % methylated cytosines across 5 accessions")
+```
+
+
+```{r}
+c_n_t_avg <- c_n_t %>% group_by(Gene, Context, HV, Nterm, cluster_type) %>% summarize(mean_percent_methylation = mean(percent_methylated))
+
+#my_comparisons <- list( c(0, 1))
+ggplot(c_n_t_avg,
+       aes(x=Nterm, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+  facet_wrap(~Context)+
+  #geom_point(position = position_jitterdodge(), alpha=0.3)+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene %methylation across 5 accessions")+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif')
+```
+```{r}
+compare_means(mean_percent_methylation~HV, c_n_t_avg, method = 't.test', paired = FALSE, group.by=c('Context', 'Nterm') )
+```
+
+
+```{r}
+t.test(mean_percent_methylation ~ HV, data=c_n_t_avg %>% filter(Context == 'CpG') %>% filter(Nterm == 'C'))
+t.test(mean_percent_methylation ~ HV, data=c_n_t_avg %>% filter(Context == 'CpG') %>% filter(Nterm == 'T'))
+```
+
+```{r}
+CpG <- c_n_t_avg %>% filter(Context == 'CpG')
+ggplot(CpG,
+       aes(x=cluster_type, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+  geom_point(position = position_jitterdodge(), alpha=0.3)+
+  labs(x = 'cluster_type', y='percentage methylated cytosines', title="Per gene % CpG methylation by cluster")+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif')
+```
+```{r}
+t.test(mean_percent_methylation ~ HV, data=CpG %>% filter(cluster_type == 'major'))
+t.test(mean_percent_methylation ~ HV, data=CpG %>% filter(cluster_type == 'minor'))
+t.test(mean_percent_methylation ~ HV, data=CpG %>% filter(cluster_type == 'singleton'))
+```
+```{r}
+ggplot(CpG,
+       aes(x=Nterm, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+  facet_wrap(~cluster_type)+
+  geom_point(position = position_jitterdodge(), alpha=0.3)+
+  labs(x = 'cluster_type', y='percentage methylated cytosines', title="Per gene % CpG methylation by cluster")+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif')
+```
+
+
+```{r}
+gene_average <- df2 %>% group_by(Gene, Context, HV) %>% summarize(mean_percent_methylation = mean(percent_methylated))
+
+ggplot(gene_average,
+       aes(x=Context, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+#  geom_point(position = position_jitterdodge(), )+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene %methylation averaged over 5 accessions")
+
+
+CHG_t <- t.test(mean_percent_methylation ~ HV, data=gene_average%>%filter(Context=='CHG'))$p.value
+CHH_t <- t.test(mean_percent_methylation ~ HV, data=gene_average%>%filter(Context=='CHH'))$p.value
+CpG_t <- t.test(mean_percent_methylation ~ HV, data=gene_average%>%filter(Context=='CpG'))$p.value
+
+print(paste("CHG p value: ", CHG_t, " CHH p value: ", CHH_t, "CpG p value", CpG_t))
+```
+
+```{r}
+williams <- df2 %>% filter(Accession != 'SRR771698') %>% group_by(Gene, Context, HV) %>% summarize(mean_percent_methylation = mean(percent_methylated))
+
+
+ggplot(williams,
+       aes(x=Context, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+#  geom_point(position = position_jitterdodge(), )+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene %methylation averaged over 5 accessions")
+
+CHG_t <- t.test(mean_percent_methylation ~ HV, data=williams%>%filter(Context=='CHG'))$p.value
+CHH_t <- t.test(mean_percent_methylation ~ HV, data=williams%>%filter(Context=='CHH'))$p.value
+CpG_t <- t.test(mean_percent_methylation ~ HV, data=williams%>%filter(Context=='CpG'))$p.value
+
+print(paste("CHG p value: ", CHG_t, " CHH p value: ", CHH_t, "CpG p value", CpG_t))
+```
+```{r}
+will_working <- merge(williams, working_table, by=c('Gene', 'HV'))%>% 
+  filter(Nterm != 'R') %>% filter(Nterm != 'X')
+
+ggplot(will_working,
+       aes(x=Nterm, y=mean_percent_methylation, fill=HV))+
+  geom_boxplot()+
+  facet_wrap(~Context)+
+  #geom_point(position = position_jitterdodge(), alpha=0.3)+
+  labs(x = 'context', y='percentage methylated cytosines', title="Per gene % methylation, williams accessions averageds")+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif')
+```
+```{r}
+t.test(mean_percent_methylation~HV, data=will_working %>% filter(Context == 'CpG') %>% filter(Nterm == 'C'))
+```
+
+
+
+```{r}
+df3 <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//disrepect_context.xlsx")
+
+df3 <- df3 %>% mutate('percent_methylated' = prop_methylated*100)
+
+
+ggplot(df3,
+       aes(x=HV, y=percent_methylated, fill=HV))+
+  geom_boxplot()+
+#  geom_point(position = position_jitterdodge(), )+
+  labs(x = 'context', y='percentage methylated cytosines', title="Percent methylation across 5 accessions")
+```
+
