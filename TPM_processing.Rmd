@@ -1,0 +1,230 @@
+---
+title: "TPM"
+author: "Chandler Sutherland"
+date: "2022-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggsignif)
+library(ggpubr)
+```
+
+Load in the TPM matrix, filter to just NLRs. Average TPMs across samples, and plot 
+
+
+non-mappable genes: Non-mappable NLRs: 
+At1G58807
+AT1G58848
+AT1G59124
+AT1G59218: RPP13
+```{r}
+TPM <- read.table("tpm_matrix.csv", header=TRUE, sep=",", row.names=2)%>% subset(select=c(-X))
+
+working_table <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//working_table.xlsx")
+
+nlrs <- readxl::read_xlsx('working_table.xlsx')$Gene
+
+hv <- readxl::read_xlsx('working_table.xlsx')[c('Gene','HV')]
+
+
+hv <- hv %>% as.data.frame()
+row.names(hv) <- hv$Gene
+
+TPM_nlrs <- TPM %>% filter(row.names(TPM) %in% nlrs) 
+
+test <- TPM_nlrs %>% merge(hv, by=0, all=TRUE) %>%
+  subset(!Row.names %in% c('AT1G58807','AT1G58848','AT1G59124','AT1G59218'))
+
+test <- test %>% mutate('mean' = rowMeans(test[2:5])) 
+test$HV <- as.character(test$HV)
+test<- test %>% mutate('col' = recode(HV, `0` = '#00BFC4', `1` = '#F8766D'))
+
+test <- test %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+test$HV <- factor(test$HV , levels=c("non-hv", "hv"))
+
+ggplot(test, aes(x=HV, y=mean, fill=HV))+
+  geom_boxplot() + 
+  scale_fill_manual(values=c('#00BFC4', '#F8766D'))+
+  geom_point(position=position_jitterdodge()) + 
+  labs(fill = 'HV status',
+       title = 'Average Transcripts Per Million')
+```
+
+Compare hv/nonhv/all genes 
+```{r}
+TPM_df <- TPM %>% mutate('mean' = rowMeans(TPM[1:4])) 
+
+all_expression <- merge(TPM_df, working_table, by.x=0, by.y='Gene', all=TRUE)
+
+all_expression$Nterm[is.na(all_expression$Nterm)]<-'all_genes'
+all_expression <- all_expression %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+all_expression$HV[is.na(all_expression$HV)]<-'all_genes'
+all_expression$HV <- factor(all_expression$HV , levels=c("all_genes", "non-hv", "hv"))
+
+all_expression <- all_expression %>% filter(Nterm != 'X')
+
+ggplot((all_expression),
+       aes(x=HV, y=mean, fill=factor(HV)))+
+  geom_boxplot()+
+  scale_fill_manual(values=c('grey', '#F8766D', '#00BFC4')) +
+  geom_point(data=all_expression, aes(x=HV, y=mean), position=position_jitterdodge())+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif', 
+                     bracket.size=0.3)
+```
+Not super informative. But ok. Maybe log scale?
+
+```{r}
+all_expression <- all_expression %>% mutate(log_mean = log(all_expression$mean+.0001)) %>% 
+  subset(Row.names != c('AT1G58807', 'AT1G58848', 'AT1G59124', 'AT1G59218'))
+all_expression$HV <- factor(all_expression$HV, levels=c('all_genes', 'non-hv', 'hv'))
+NLR_expression <- all_expression %>% filter(HV == 'hv' | HV == 'non-hv')
+#NLR_expression$HV <- factor(NLR_expression$HV , levels=c("non-hv", "hv"))
+
+ggplot((all_expression),
+       aes(x=HV, y=log_mean, fill=HV))+
+  geom_violin()+
+  scale_fill_manual(values=c('grey', '#F8766D', '#00BFC4')) +
+  geom_point(data=NLR_expression, aes(x=HV, y=log_mean), position=position_jitterdodge())+
+  labs(y='log(Average TPM)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('all_genes', 'non-hv'), 
+                               c('non-hv', 'hv'), 
+                               c('all_genes', 'hv')), 
+              map_signif_level = TRUE, y_position = c(10.5, 8, 13), test=t.test)
+
+compare_means(log_mean~HV, all_expression, method='t.test')
+```
+
+```{r}
+#final figure 
+p1 <- ggplot((NLR_expression),
+       aes(x=HV, y=mean, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=NLR_expression, aes(x=HV, y=mean), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='Average TPM', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(150, 75), test=t.test)
+
+p1
+ggsave(filename='TPM_hv.png', plot=p1, dpi='retina', width=8, height=4)
+
+compare_means(mean~HV, NLR_expression, method='t.test', paired=FALSE)
+
+#log version 
+p1.1 <- ggplot((NLR_expression),
+       aes(x=HV, y=log_mean, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=NLR_expression, aes(x=HV, y=log_mean), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='log(Average TPM)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(10, 8), test=t.test)
+
+p1.1
+ggsave(filename='TPM_hv.png', plot=p1, dpi='retina', width=8, height=4)
+
+compare_means(mean~HV, NLR_expression, method='t.test', paired=FALSE)
+```
+
+```{r}
+#final figure
+easy_clust <- NLR_expression %>% filter(cluster_type != 'NA') 
+easy_clust[easy_clust == 'major'] <- 'cluster'
+easy_clust[easy_clust == 'minor'] <- 'cluster'
+
+p2 <- ggplot((easy_clust),
+       aes(x=cluster_type, y=mean))+
+  geom_violin(aes(fill=HV))+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=easy_clust, aes(x=cluster_type, y=mean, fill=HV), position=position_jitterdodge(),
+             alpha = 0.3) + 
+  theme_classic()+
+  labs(y='Average TPM', x='', fill = '')+
+  geom_signif(stat="identity", 
+              data=data.frame(x = c(0.8, 1.8),
+                              xend=c(1.2, 2.2),
+                              y = c(150, 150),
+                              annotation = c("**", "ns")), 
+              aes(x=x, 
+                  xend=xend, 
+                  y=y, 
+                  yend=y,
+                  annotation=annotation), 
+              tip_length=0.1)+
+  theme(text=element_text(size=18), legend.position='top')
+
+p2
+ggsave(filename='TPM_cluster.png', plot=p2, dpi='retina', width=8, height=4.5)
+
+#log version 
+ggplot((easy_clust),
+       aes(x=cluster_type, y=log_mean))+
+  geom_violin(aes(fill=HV))+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=easy_clust, aes(x=cluster_type, y=log_mean, fill=HV), position=position_jitterdodge(),
+             alpha = 0.3) + 
+  theme_classic()+
+  labs(y='Average TPM', x='', fill = '')
+
+```
+```{r}
+compare_means(mean~HV, easy_clust, method='t.test', group.by='cluster_type')
+```
+
+```{r}
+#does everything hold across samples 
+
+test2 <- TPM_nlrs %>% as.data.frame() %>% merge(hv, by=0, all=TRUE) %>%
+  subset(!Row.names %in% c('AT1G58807','AT1G58848','AT1G59124','AT1G59218')) %>% 
+  dplyr::select(-c('Row.names'))
+test2$HV <- as.character(test2$HV)
+
+test2 <- test2 %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+test2$HV <- factor(test2$HV, levels=c('non-hv', 'hv'))
+
+ggplot((test2),
+       aes(x=HV, y=SRR17281235, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=test2, aes(x=HV, y=SRR17281235), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='SRR17281235', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(150, 75), test=t.test)
+
+ggplot((test2),
+       aes(x=HV, y=SRR17281236, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=test2, aes(x=HV, y=SRR17281236), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='SRR17281236', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(150, 75), test=t.test)
+
+ggplot((test2),
+       aes(x=HV, y=SRR17281234, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=test2, aes(x=HV, y=SRR17281234, fill=HV), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='SRR17281234', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(150, 75), test=t.test)
+```
+
+Gorgina 
