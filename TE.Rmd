@@ -1,0 +1,205 @@
+---
+title: "TE table"
+author: "Chandler Sutherland"
+date: "2022-11-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggsignif)
+library(ggpubr)
+```
+
+```{r}
+TE_table <- read.table(file='NLR_TE_dist.tsv', header=1)
+
+working_table <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//working_table.xlsx")
+
+#looks like there are sometimes two identical values 
+TE_table%>% group_by(gene) %>% summarize(mean = mean(te_dist), sd = sd(te_dist))
+
+distinct <- TE_table %>% distinct()
+
+TE <- merge(distinct, working_table, by.x = 'gene', by.y='Gene')
+```
+
+```{r}
+
+TE <- TE %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+
+TE <- TE %>% mutate(te_dist = te_dist/1000)
+TE$HV <- factor(TE$HV , levels=c("non-hv", "hv"))
+just_rpp4 <- TE %>% filter(cluster == 'DM8_RPP4-5')
+p3 <- ggplot(TE,
+       aes(x=HV, y=te_dist, fill=HV))+
+    geom_violin()+
+    geom_point(position = position_jitterdodge(), alpha=0.3)+
+    labs(x = '', y='Distance to nearest TE (kb)')+
+  #  stat_compare_means(method='t.test', 
+   #                    label = 'p.signif')+
+   geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(32, 33), test=t.test)+
+    scale_fill_manual(values=c('#00BFC4',  '#F8766D'))+
+  theme_classic()+
+    theme(legend.position='none', text=element_text(size=18))
+
+p3
+
+compare_means(te_dist~HV, TE, method = 't.test', paired = FALSE)
+
+ggsave(filename='TE.png', plot=p3, dpi='retina', width=8, height=4)
+```
+```{r}
+easy_clust <- TE %>% filter(cluster_type != 'NA') 
+easy_clust[easy_clust == 'major'] <- 'cluster'
+easy_clust[easy_clust == 'minor'] <- 'cluster'
+
+p2 <- ggplot((easy_clust),
+       aes(x=cluster_type, y=te_dist))+
+  geom_violin(aes(fill=HV))+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=easy_clust, 
+             aes(x=cluster_type, y=te_dist, fill=HV), 
+             position=position_jitterdodge(),
+             alpha = 0.3) + 
+  theme_classic()+
+  theme(text=element_text(size=18), legend.position = 'none')+
+  labs(y='Distance to Nearest TE (kb)', x='', fill = '')+
+  #  stat_compare_means(method='t.test', 
+  #                   label = 'p.signif')
+  geom_signif(stat="identity", 
+              data=data.frame(x = c(0.8, 1.8),
+                              xend=c(1.2, 2.2),
+                              y = c(33, 20),
+                              annotation = c("***", "ns")), 
+              aes(x=x, 
+                  xend=xend, 
+                  y=y, 
+                  yend=y,
+                  annotation=annotation), 
+              tip_length=0.1)
+
+ggsave(filename='TE_cluster.png', plot=p2, dpi='retina', width=8, height=4)
+
+compare_means(te_dist~HV, easy_clust, group.by='cluster_type', method='t.test')
+#compare_means(mean_percent_methylation~HV, dif_merge, method = 't.test', paired = FALSE)
+p3
+```
+Let's look at ALL the TEs. 
+```{r}
+all_TE <- read.table(file='Atha_genes_with_TE_dist.tsv', header=1) %>% select(chr, Gene, te_dist) %>% filter(chr != 'ChrC' & chr != 'ChrM')
+all_TE <- all_TE %>% mutate(te_dist = te_dist/1000)
+all_TE <- merge(all_TE, working_table, by ='Gene', all=TRUE)
+
+all_TE$Nterm[is.na(all_TE$Nterm)]<-'all_genes'
+all_TE <- all_TE %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+all_TE$HV[is.na(all_TE$HV)]<-'all_genes'
+all_TE$HV <- factor(all_TE$HV , levels=c("all_genes", "non-hv", "hv"))
+
+#all_TE <- all_TE %>% filter(Nterm != 'X')
+
+ggplot((all_TE),
+       aes(x=HV, y=te_dist, fill=factor(HV)))+
+  geom_boxplot()+
+  scale_fill_manual(values=c('grey', '#F8766D', '#00BFC4')) +
+  geom_point(data=all_TE, aes(x=HV, y=te_dist), position=position_jitterdodge())+
+  stat_compare_means(method='t.test', 
+                     label = 'p.signif', 
+                     bracket.size=0.3)
+```
+
+```{r}
+all_TE$HV <- factor(all_TE$HV, levels=c('all_genes', 'non-hv', 'hv'))
+all_TE <- all_TE %>% mutate(log_te = log(all_TE$te_dist+.0001))
+NLR_TE <- all_TE %>% filter(HV == 'hv' | HV == 'non-hv')
+
+
+ggplot((all_TE),
+       aes(x=HV, y=te_dist, fill=HV))+
+  geom_violin()+
+  scale_fill_manual(values=c('grey', '#F8766D', '#00BFC4')) +
+  geom_point(data=NLR_TE, aes(x=HV, y=te_dist), position=position_jitterdodge(), alpha=0.3)+
+  labs(y='Distance to nearest TE (kb)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('all_genes', 'non-hv'), 
+                               c('non-hv', 'hv'), 
+                               c('all_genes', 'hv')), 
+              map_signif_level = TRUE, y_position = c(75, 50, 80), test=t.test)+
+  theme_classic()
+
+compare_means(te_dist~HV, all_TE, method='t.test')
+
+p6<-ggplot((all_TE),
+       aes(x=HV, y=log_te, fill=HV))+
+  geom_violin()+
+  scale_fill_manual(values=c('grey', '#F8766D', '#00BFC4')) +
+  geom_point(data=NLR_TE, aes(x=HV, y=log_te), position=position_jitterdodge(), alpha=0.3)+
+  labs(y='log Distance to nearest TE (kb)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('all_genes', 'non-hv'), 
+                               c('non-hv', 'hv'), 
+                               c('all_genes', 'hv')), 
+              map_signif_level = TRUE, y_position = c(5, 3, 4), test=t.test)+
+  theme_classic()
+
+compare_means(te_dist~HV, all_TE, method='t.test')
+
+ggsave(filename='te_all_genes.png', plot=p6, dpi='retina', width=8, height=5)
+```
+
+```{r}
+NLR_TE <- all_TE %>% filter(HV == 'hv' | HV == 'non-hv')
+p7 <- ggplot((NLR_TE),
+       aes(x=HV, y=te_dist, fill=HV))+
+  geom_violin()+
+  scale_fill_manual(values=c('#F8766D', '#00BFC4')) +
+  geom_point(position=position_jitterdodge(), alpha=0.3)+
+  labs(y='Distance to nearest TE (kb)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(32, 33), test=t.test)+
+  theme_classic()
+
+ggsave(filename='TE.png', plot=p7, dpi='retina', width=8, height=4)
+```
+
+```{r}
+HV_te_dist_mean <- table %>% filter(HV == 'hv') %>% pull(te_dist) %>% mean()
+HV_te_dist_median <- table %>% filter(HV == 'hv') %>% pull(te_dist) %>% median()
+
+paste('HV NLRs have a mean te distance of ', HV_te_dist_mean, 'and a median te distance of ', HV_te_dist_median)
+
+nHV_te_dist_mean <- table %>% filter(HV == 'non-hv') %>% pull(te_dist) %>% mean()
+nHV_te_dist_median <- table %>% filter(HV == 'non-hv') %>% pull(te_dist) %>% median()
+
+paste('nHV NLRs have a mean te distance of ', nHV_te_dist_mean, 'and a median te distance of ', nHV_te_dist_median)
+```
+Checkin with the table uktfv
+```{r}
+table <- readxl::read_xlsx(path="C://Users//chand//Box Sync//Krasileva_Lab//Research//chandler//Krasileva Lab//E14//table.xlsx")
+table_map <- table %>% mutate(HV=recode(HV, `0` = "non-hv", 
+                                       `1`="hv"))
+table_map$HV <- factor(table_map$HV , levels=c("non-hv", "hv"))
+
+p3.1 <- ggplot((table_map),
+       aes(x=HV, y=te_dist/1000, fill=factor(HV)))+
+  geom_violin()+
+  scale_fill_manual(values=c('#00BFC4', '#F8766D')) +
+  geom_point(data=table_map, aes(x=HV, y=te_dist/1000), position=position_jitterdodge(), alpha=0.3)+
+  theme_classic()+
+  labs(y='Distance to nearest TE (kb)', x='')+
+  theme(legend.position='none', text=element_text(size=18))+
+  geom_signif(comparisons=list(c('non-hv', 'hv')), map_signif_level = TRUE, y_position = c(32, 8), test=t.test)
+
+p3.1
+ggsave(filename='te_hv.png', plot=p3.1, dpi='retina', width=8, height=4)
+
+compare_means(te_dist~HV, table_map, method='t.test', paired=FALSE)
+```
+
