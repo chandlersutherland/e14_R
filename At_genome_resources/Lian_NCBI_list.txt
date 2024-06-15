@@ -1,0 +1,483 @@
+
+1. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034190; Sample name: Yo-0
+Organism:	Arabidopsis thaliana
+		ecotype: Yo-0
+Package:	Plant; version 1.0
+Accession: SAMN38034190	ID: 38034190
+
+2. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034189; Sample name: Tsu-0
+Organism:	Arabidopsis thaliana
+		ecotype: Tsu-0
+Package:	Plant; version 1.0
+Accession: SAMN38034189	ID: 38034189
+
+3. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034188; Sample name: Shigu-2
+Organism:	Arabidopsis thaliana
+		ecotype: Shigu-2
+Package:	Plant; version 1.0
+Accession: SAMN38034188	ID: 38034188
+
+4. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034187; Sample name: Shahdara
+Organism:	Arabidopsis thaliana
+		ecotype: Shahdara
+Package:	Plant; version 1.0
+Accession: SAMN38034187	ID: 38034187
+
+5. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034186; Sample name: Ri-0
+Organism:	Arabidopsis thaliana
+		ecotype: Ri-0
+Package:	Plant; version 1.0
+Accession: SAMN38034186	ID: 38034186
+
+6. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034185; Sample name: Oy-0
+Organism:	Arabidopsis thaliana
+		ecotype: Oy-0
+Package:	Plant; version 1.0
+Accession: SAMN38034185	ID: 38034185
+
+7. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034184; Sample name: Nok-1
+Organism:	Arabidopsis thaliana
+		ecotype: Nok-1
+Package:	Plant; version 1.0
+Accession: SAMN38034184	ID: 38034184
+
+8. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034183; Sample name: Kz-9
+Organism:	Arabidopsis thaliana
+		ecotype: KZ9
+Package:	Plant; version 1.0
+Accession: SAMN38034183	ID: 38034183
+
+9. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034182; Sample name: Jea
+Organism:	Arabidopsis thaliana
+		ecotype: JEA
+Package:	Plant; version 1.0
+Accession: SAMN38034182	ID: 38034182
+
+10. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034181; Sample name: Ita-0
+Organism:	Arabidopsis thaliana
+		ecotype: Ita-0
+Package:	Plant; version 1.0
+Accession: SAMN38034181	ID: 38034181
+
+11. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034180; Sample name: Ge-0
+Organism:	Arabidopsis thaliana
+		ecotype: Ge-0
+Package:	Plant; version 1.0
+Accession: SAMN38034180	ID: 38034180
+
+12. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034179; Sample name: Cvi-0
+Organism:	Arabidopsis thaliana
+		ecotype: Cvi-0
+Package:	Plant; version 1.0
+Accession: SAMN38034179	ID: 38034179
+
+13. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034178; Sample name: Ct-1
+Organism:	Arabidopsis thaliana
+		ecotype: Ct-1
+Package:	Plant; version 1.0
+Accession: SAMN38034178	ID: 38034178
+
+14. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034177; Sample name: Col-0
+Organism:	Arabidopsis thaliana
+		ecotype: Col-0
+Package:	Plant; version 1.0
+Accession: SAMN38034177	ID: 38034177
+
+15. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034176; Sample name: Can-0
+Organism:	Arabidopsis thaliana
+		ecotype: Can-0
+Package:	Plant; version 1.0
+Accession: SAMN38034176	ID: 38034176
+
+16. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034175; Sample name: Cant-1
+Organism:	Arabidopsis thaliana
+		ecotype: Cant-1
+Package:	Plant; version 1.0
+Accession: SAMN38034175	ID: 38034175
+
+17. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034174; Sample name: Bur-0
+Organism:	Arabidopsis thaliana
+		ecotype: Bur-0
+Package:	Plant; version 1.0
+Accession: SAMN38034174	ID: 38034174
+
+18. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034173; Sample name: Blh-1
+Organism:	Arabidopsis thaliana
+		ecotype: Blh-1
+Package:	Plant; version 1.0
+Accession: SAMN38034173	ID: 38034173
+
+19. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034172; Sample name: Bla-1
+Organism:	Arabidopsis thaliana
+		ecotype: Bla-1
+Package:	Plant; version 1.0
+Accession: SAMN38034172	ID: 38034172
+
+20. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034171; Sample name: Bay-0
+Organism:	Arabidopsis thaliana
+		ecotype: Bay-0
+Package:	Plant; version 1.0
+Accession: SAMN38034171	ID: 38034171
+
+21. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034170; Sample name: Are-10
+Organism:	Arabidopsis thaliana
+		ecotype: Are-10
+Package:	Plant; version 1.0
+Accession: SAMN38034170	ID: 38034170
+
+22. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034169; Sample name: Are-6
+Organism:	Arabidopsis thaliana
+		ecotype: Are-6
+Package:	Plant; version 1.0
+Accession: SAMN38034169	ID: 38034169
+
+23. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034168; Sample name: Are-2
+Organism:	Arabidopsis thaliana
+		ecotype: Are-2
+Package:	Plant; version 1.0
+Accession: SAMN38034168	ID: 38034168
+
+24. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034167; Sample name: Are-1
+Organism:	Arabidopsis thaliana
+		ecotype: Are-1
+Package:	Plant; version 1.0
+Accession: SAMN38034167	ID: 38034167
+
+25. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034166; Sample name: Anz-0
+Organism:	Arabidopsis thaliana
+		ecotype: Anz-0
+Package:	Plant; version 1.0
+Accession: SAMN38034166	ID: 38034166
+
+26. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034165; Sample name: Toufl-1
+Organism:	Arabidopsis thaliana
+		ecotype: Toufl-1
+Package:	Plant; version 1.0
+Accession: SAMN38034165	ID: 38034165
+
+27. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034164; Sample name: Nemrut-1
+Organism:	Arabidopsis thaliana
+		ecotype: Nemrut-1
+Package:	Plant; version 1.0
+Accession: SAMN38034164	ID: 38034164
+
+28. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034163; Sample name: Dog-4
+Organism:	Arabidopsis thaliana
+		ecotype: Dog-4
+Package:	Plant; version 1.0
+Accession: SAMN38034163	ID: 38034163
+
+29. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034162; Sample name: Geg-14
+Organism:	Arabidopsis thaliana
+		ecotype: Geg-14
+Package:	Plant; version 1.0
+Accession: SAMN38034162	ID: 38034162
+
+30. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034161; Sample name: Valsi-1
+Organism:	Arabidopsis thaliana
+		ecotype: Valsi-1
+Package:	Plant; version 1.0
+Accession: SAMN38034161	ID: 38034161
+
+31. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034160; Sample name: Pyl-1
+Organism:	Arabidopsis thaliana
+		ecotype: PYL-1
+Package:	Plant; version 1.0
+Accession: SAMN38034160	ID: 38034160
+
+32. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034159; Sample name: Zin9
+Organism:	Arabidopsis thaliana
+		ecotype: Zin9
+Package:	Plant; version 1.0
+Accession: SAMN38034159	ID: 38034159
+
+33. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034158; Sample name: ws-4
+Organism:	Arabidopsis thaliana
+		ecotype: ws-4
+Package:	Plant; version 1.0
+Accession: SAMN38034158	ID: 38034158
+
+34. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034157; Sample name: Taz-0
+Organism:	Arabidopsis thaliana
+		ecotype: Taz-0
+Package:	Plant; version 1.0
+Accession: SAMN38034157	ID: 38034157
+
+35. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034156; Sample name: Tanz-1
+Organism:	Arabidopsis thaliana
+		ecotype: Tanz-1
+Package:	Plant; version 1.0
+Accession: SAMN38034156	ID: 38034156
+
+36. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034155; Sample name: Stw-0
+Organism:	Arabidopsis thaliana
+		ecotype: Stw-0
+Package:	Plant; version 1.0
+Accession: SAMN38034155	ID: 38034155
+
+37. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034154; Sample name: St-0
+Organism:	Arabidopsis thaliana
+		ecotype: St-0
+Package:	Plant; version 1.0
+Accession: SAMN38034154	ID: 38034154
+
+38. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034153; Sample name: Rab-R1
+Organism:	Arabidopsis thaliana
+		ecotype: Rab-R1
+Package:	Plant; version 1.0
+Accession: SAMN38034153	ID: 38034153
+
+39. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034152; Sample name: Ice-1
+Organism:	Arabidopsis thaliana
+		ecotype: Ice-1
+Package:	Plant; version 1.0
+Accession: SAMN38034152	ID: 38034152
+
+40. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034151; Sample name: Tul-0
+Organism:	Arabidopsis thaliana
+		ecotype: Tul-0
+Package:	Plant; version 1.0
+Accession: SAMN38034151	ID: 38034151
+
+41. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034150; Sample name: Sf-2
+Organism:	Arabidopsis thaliana
+		ecotype: Sf-2
+Package:	Plant; version 1.0
+Accession: SAMN38034150	ID: 38034150
+
+42. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034149; Sample name: Qar-8a
+Organism:	Arabidopsis thaliana
+		ecotype: Qar-8a
+Package:	Plant; version 1.0
+Accession: SAMN38034149	ID: 38034149
+
+43. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034148; Sample name: No-0
+Organism:	Arabidopsis thaliana
+		ecotype: No-0
+Package:	Plant; version 1.0
+Accession: SAMN38034148	ID: 38034148
+
+44. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034147; Sample name: N13
+Organism:	Arabidopsis thaliana
+		ecotype: N13
+Package:	Plant; version 1.0
+Accession: SAMN38034147	ID: 38034147
+
+45. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034146; Sample name: Etna-2
+Organism:	Arabidopsis thaliana
+		ecotype: Etna-2
+Package:	Plant; version 1.0
+Accession: SAMN38034146	ID: 38034146
+
+46. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034145; Sample name: Elh-2
+Organism:	Arabidopsis thaliana
+		ecotype: Elh-2
+Package:	Plant; version 1.0
+Accession: SAMN38034145	ID: 38034145
+
+47. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034144; Sample name: Edi-0
+Organism:	Arabidopsis thaliana
+		ecotype: Edi-0
+Package:	Plant; version 1.0
+Accession: SAMN38034144	ID: 38034144
+
+48. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034143; Sample name: Zal-1
+Organism:	Arabidopsis thaliana
+		ecotype: Zal-1
+Package:	Plant; version 1.0
+Accession: SAMN38034143	ID: 38034143
+
+49. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034142; Sample name: Sus-1
+Organism:	Arabidopsis thaliana
+		ecotype: Sus-1
+Package:	Plant; version 1.0
+Accession: SAMN38034142	ID: 38034142
+
+50. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034141; Sample name: Sah-0
+Organism:	Arabidopsis thaliana
+		ecotype: Sah-0
+Package:	Plant; version 1.0
+Accession: SAMN38034141	ID: 38034141
+
+51. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034140; Sample name: Rubezhnoe-1
+Organism:	Arabidopsis thaliana
+		ecotype: Rubezhnoe-1
+Package:	Plant; version 1.0
+Accession: SAMN38034140	ID: 38034140
+
+52. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034139; Sample name: RRS10
+Organism:	Arabidopsis thaliana
+		ecotype: RRS10
+Package:	Plant; version 1.0
+Accession: SAMN38034139	ID: 38034139
+
+53. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034138; Sample name: Kar-1
+Organism:	Arabidopsis thaliana
+		ecotype: Kar-1
+Package:	Plant; version 1.0
+Accession: SAMN38034138	ID: 38034138
+
+54. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034137; Sample name: Altai-5
+Organism:	Arabidopsis thaliana
+		ecotype: Altai-5
+Package:	Plant; version 1.0
+Accession: SAMN38034137	ID: 38034137
+
+55. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034136; Sample name: Abd-0
+Organism:	Arabidopsis thaliana
+		ecotype: Abd-0
+Package:	Plant; version 1.0
+Accession: SAMN38034136	ID: 38034136
+
+56. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034135; Sample name: Rld-2
+Organism:	Arabidopsis thaliana
+		ecotype: Rld-2
+Package:	Plant; version 1.0
+Accession: SAMN38034135	ID: 38034135
+
+57. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034134; Sample name: Nov-02
+Organism:	Arabidopsis thaliana
+		ecotype: Nov-02
+Package:	Plant; version 1.0
+Accession: SAMN38034134	ID: 38034134
+
+58. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034133; Sample name: Kyr-1
+Organism:	Arabidopsis thaliana
+		ecotype: Kyr-1
+Package:	Plant; version 1.0
+Accession: SAMN38034133	ID: 38034133
+
+59. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034132; Sample name: Ishikawa
+Organism:	Arabidopsis thaliana
+		ecotype: Ishikawa
+Package:	Plant; version 1.0
+Accession: SAMN38034132	ID: 38034132
+
+60. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034131; Sample name: Hiroshima
+Organism:	Arabidopsis thaliana
+		ecotype: Hiroshima
+Package:	Plant; version 1.0
+Accession: SAMN38034131	ID: 38034131
+
+61. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034130; Sample name: Had-6b
+Organism:	Arabidopsis thaliana
+		ecotype: Had-6b
+Package:	Plant; version 1.0
+Accession: SAMN38034130	ID: 38034130
+
+62. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034129; Sample name: Est-1
+Organism:	Arabidopsis thaliana
+		ecotype: Est-1
+Package:	Plant; version 1.0
+Accession: SAMN38034129	ID: 38034129
+
+63. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034128; Sample name: Co-4
+Organism:	Arabidopsis thaliana
+		ecotype: Co-4
+Package:	Plant; version 1.0
+Accession: SAMN38034128	ID: 38034128
+
+64. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034127; Sample name: Ms-0
+Organism:	Arabidopsis thaliana
+		ecotype: Ms-0
+Package:	Plant; version 1.0
+Accession: SAMN38034127	ID: 38034127
+
+65. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034126; Sample name: Mr-0
+Organism:	Arabidopsis thaliana
+		ecotype: Mr-0
+Package:	Plant; version 1.0
+Accession: SAMN38034126	ID: 38034126
+
+66. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034125; Sample name: Mh-0
+Organism:	Arabidopsis thaliana
+		ecotype: Mh-0
+Package:	Plant; version 1.0
+Accession: SAMN38034125	ID: 38034125
+
+67. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034124; Sample name: Kas-1
+Organism:	Arabidopsis thaliana
+		ecotype: Kas-1
+Package:	Plant; version 1.0
+Accession: SAMN38034124	ID: 38034124
+
+68. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034123; Sample name: Est-0
+Organism:	Arabidopsis thaliana
+		ecotype: Est-0
+Package:	Plant; version 1.0
+Accession: SAMN38034123	ID: 38034123
+
+69. Plant sample from Arabidopsis thaliana
+Identifiers:	BioSample: SAMN38034122; Sample name: Db-1
+Organism:	Arabidopsis thaliana
+		ecotype: Db-1
+Package:	Plant; version 1.0
+Accession: SAMN38034122	ID: 38034122

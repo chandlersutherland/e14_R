@@ -1,0 +1,134 @@
+---
+title: "At_genome_resources"
+author: "Chandler Sutherland"
+date: "2024-04-16"
+output: html_document
+---
+
+Purpose: Let's keep track of the Arabidopsis genomes! Who is sequenced where, and to what depth? 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(openxlsx)
+library(ggvenn)
+```
+Load datasets from the most recent pangenome pubs, the pan-NLRome paper, and 1001 genomes. 
+```{r}
+input_path <- "C:\\Users\\chand\\Box Sync\\Krasileva_Lab\\Research\\chandler\\Krasileva Lab\\E14\\e14_R\\At_genome_resources\\"
+
+Kang <- readxl::read_xlsx(path=paste(input_path, 'Kang_2023_metadata.xlsx', sep=''))
+Lian <- readxl::read_xlsx(path=paste(input_path, 'Lian_2024_metadata.xlsx', sep=''), sheet=1, skip=2)
+Wlod <- readxl::read_xlsx(path=paste(input_path, 'Wlodzimierz_2023_metadata.xlsx', sep=''))
+onetusind_genome <- read_csv(file=paste(input_path, '1001_genomes_metadata.txt', sep=''), 
+                             col_names=c("accession_id", "sequencer", "name", "Country", "name_2", "Latitude", 
+                                         "Longitude", "Collector", 'NA', 'CS_number', 'admixture_group', 'NA_2', 'color_code'))
+nlrome <- readxl::read_xlsx(path=paste(input_path, 'NLRome_metadata.xlsx', sep=''))
+Jiao <- data.frame(
+  stringsAsFactors = FALSE,
+            accession = c('An-1', 'C24', 'Cvi-0', 'Eri-1', 'Kyo', 'Ler-0', 'Sha')) %>% 
+  mutate(Jiao='TRUE')
+```
+```{r}
+#check overlap between Lian and 1001 genomes
+
+print(paste('There are ', as.character(sum(Lian$Accession %in% onetusind_genome$name)), 'genomes from Lian 2024 in the 1001 genome resource.'))
+Lian %>% filter(Accession %in% onetusind_genome$name)
+```
+Goal dataframe: Accession Name, CS_number if exists, present in 1001 genomes?, present in Lian?, present in Kang?, present in NLRome?, other RNA resource? other long read genome resource? 
+
+```{r}
+#use 1001 genome as the backbone dataframe 
+thousand <- onetusind_genome %>% subset(select=c(accession_id, name, name_2, CS_number)) %>% mutate(thousand_one = 'TRUE')
+nlrome_2 <- nlrome %>% subset(select=c(`Original ID`, `Updated 1001G_ID`, Accession, Stock_Numbers)) %>% mutate(NLRome='TRUE')
+Lian_stub <- Lian %>% subset(select=c('Accession')) %>% mutate(Lian='TRUE')
+Kang_stub <- Kang %>% mutate(Kang='TRUE')
+Wlod_stub <- Wlod %>% subset(select=c('Accession_name')) %>% mutate(Wlod='TRUE')
+
+all_set <- merge(thousand, nlrome_2, by.x='accession_id', by.y='Updated 1001G_ID', all=T) %>% 
+  subset(select=c(accession_id, name, CS_number, NLRome, thousand_one)) %>% 
+  merge(Lian_stub, by.x='name', by.y='Accession', all=T) %>%
+  merge(Kang_stub, by.x='name', by.y='Name', all=T) %>%
+  merge(Wlod_stub, by.x='name', by.y='Accession_name', all=T)%>%
+  merge(Jiao, by.x='name', by.y='accession', all=T)%>%
+  mutate_all(~replace(., is.na(.), FALSE)) 
+
+sequenced <- all_set %>%
+  filter(!(NLRome=='FALSE' & Lian == 'FALSE' & Kang=='FALSE')) #remove 1001 genomes not present elsewhere 
+
+sequenced %>% filter(CS_number==`CS Number`) %>% filter(CS_number !='FALSE')
+#5 cases where the CS number matches 
+
+sequenced %>% filter(CS_number != 'FALSE' &  `CS Number` != 'FALSE') %>% filter(CS_number != `CS Number`)
+
+not_thousand <- all_set %>% filter(thousand_one=='FALSE')
+
+
+```
+
+
+
+
+Ok, lots of manual pruning to be done, but a rough venn diagram is doable 
+
+```{r}
+x<- list(
+  thousand_and_one = all_set %>% filter(thousand_one=='TRUE') %>% pull('name'), 
+  nlrome = all_set %>% filter(NLRome=='TRUE') %>% pull('name'),
+  Lian = all_set %>% filter(Lian=='TRUE') %>% pull('name'),
+  #Kang = all_set %>% filter(Kang=='TRUE') %>% pull('name'), 
+  Wlod = all_set %>% filter(Wlod=='TRUE') %>% pull('name')
+)
+
+ggvenn(
+  x, 
+  fill_color = c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 'orange'),
+  stroke_size = 0.5, set_name_size = 5
+  )
+```
+```{r}
+x<- list(
+  #thousand_and_one = all_set %>% filter(thousand_one=='TRUE') %>% pull('name'), 
+  nlrome = sequenced %>% filter(NLRome=='TRUE') %>% pull('name'),
+  Lian = sequenced %>% filter(Lian=='TRUE') %>% pull('name'),
+  Kang = sequenced %>% filter(Kang=='TRUE') %>% pull('name'), 
+  Wlodzimierz = sequenced %>% filter(Wlod=='TRUE') %>% pull('name')
+)
+
+ggvenn(
+  x, 
+  fill_color = c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 'orange'),
+  stroke_size = 0.5, set_name_size = 5
+  )
+```
+
+Golden list of genomes:
+```{r}
+golden_genomes <- all_set %>% filter(thousand_one=='TRUE' & NLRome == 'TRUE') %>% filter(Lian=='TRUE' | Kang=='TRUE' | Wlod=='TRUE' | Jiao =='TRUE')
+
+golden_genome_list <- golden_genomes %>% pull(name)
+
+y<- list(
+  Lian = golden_genomes %>% filter(Lian=='TRUE') %>% pull('name'),
+  Kang = golden_genomes %>% filter(Kang=='TRUE') %>% pull('name'), 
+  Jiao = golden_genomes %>% filter(Jiao=='TRUE') %>% pull('name'),
+  Wlodzimierz = golden_genomes %>% filter(Wlod=='TRUE') %>% pull('name')
+)
+
+ggvenn(
+  y, 
+  fill_color = c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF"),
+  stroke_size = 0.5, set_name_size = 3, text_size=3,
+  show_elements=F
+  )
+```
+```{r}
+final <- golden_genomes %>% pivot_longer(cols=c('Lian', 'Kang', 'Wlod', 'Jiao'), names_to='source') %>% filter(value=='TRUE') %>% subset(select=c('name', 'accession_id', 'CS_number', 'source'))
+
+write.xlsx(final, paste(input_path, 'golden_genomes.xlsx', sep=''))
+```
+
